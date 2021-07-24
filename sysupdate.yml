@@ -1,0 +1,26 @@
+---
+- name: Verify docker installation
+  hosts: aws
+  become: yes
+  tasks:
+    - name: install docker package
+      package:
+        name:  docker
+        state: present
+#    - name: install nginx  package
+#      package:
+#        name:  nginx
+#        state: latest
+#    - name: start nginx
+#      service:
+#          name: nginx
+#          state: started
+    - name: copy the nginx config file and restart nginx
+      copy:
+        src:  /var/lib/jenkins/workspace/Docker_pipeline/server.conf
+        dest: /etc/nginx/conf.d/server.conf
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+    
